@@ -20,7 +20,29 @@ std::string execSSH(const char* cmd) {
 }
 
 
-int main(){
+void doLinuxCmd (const std::string& ip ,const std::string& username) {
+    std::string combined {std::string(username) + "@" + std::string(ip)};
+
+    std::string filepath {"/etc/ssh"};
+    std::string command {"scp sshd_config " + combined + ":" + filepath};
+
+    const char* comb = command.c_str();
+    
+    std::string output = execSSH(comb);
+}
+
+void doWinCmd (const std::string& ip, const std::string& username ){
+    std::string combined {std::string(username) + "@" + std::string(ip)};
+
+    std::string filepath {"C:\ProgramData\sh\sshd_config"};
+    std::string command {"scp sshd_config " + combined + ":" + filepath};
+
+    const char* comb = command.c_str();
+
+    std::string output = execSSH(comb);
+}
+
+int main() {
     std::string ip;
     std::string username;
 
@@ -30,14 +52,7 @@ int main(){
     std::cout << "please enter a username: \n";
     std::cin >> username;
 
-    std::string combined {std::string(username) + "@" + std::string(ip)};
-
-    std::string filepath {"/etc/ssh"};
-    std::string command {"scp sshd_config " + combined + ":" +filepath};
-
-    const char* comb = command.c_str();
-    
-    std::string output = execSSH(comb);
+    doLinuxCmd(ip, username);
 
     return 0;
 }
