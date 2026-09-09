@@ -37,11 +37,11 @@ void doLinuxCmd (const std::string& ip ,const std::string& username) {
 void doWinCmd (const std::string& ip, const std::string& username ){
     std::string combined {std::string(username) + "@" + std::string(ip)};
 
-    std::string filepath {"${env:ProgramData}/ssh/sshd_config"};
+    std::string filepath {"\"${env:ProgramData}/ssh/sshd_config\""};
     std::string command {"scp sshd_config " + combined + ":" + filepath};
 
-    std::string access_cmd {"Start-Process notepad '${env:ProgramData}/ssh/sshd_config' -Verb runAs"};
-
+    std::string access_cmd {"Start-Process notepad " + filepath + " -Verb runAs"};
+    std::cout << access_cmd;
 
     const char* comb = command.c_str();
     const char* ac_cmd = access_cmd.c_str();
@@ -62,6 +62,7 @@ int main() {
     std::cin >> username;
 
     doLinuxCmd(ip, username);
+    doWinCmd(ip, username);
 
     return 0;
 }
