@@ -3,6 +3,7 @@
 #include <array>
 #include <memory>
 
+
 std::string execSSH(const char* cmd) {
     std::array<char, 256> buffer;
     std::string result;
@@ -16,6 +17,7 @@ std::string execSSH(const char* cmd) {
     while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr){
         result += buffer.data();
     }
+
     return result;
 }
 
@@ -31,16 +33,23 @@ void doLinuxCmd (const std::string& ip ,const std::string& username) {
     std::string output = execSSH(comb);
 }
 
+
 void doWinCmd (const std::string& ip, const std::string& username ){
     std::string combined {std::string(username) + "@" + std::string(ip)};
 
-    std::string filepath {"C:\ProgramData\sh\sshd_config"};
+    std::string filepath {"${env:ProgramData}/ssh/sshd_config"};
     std::string command {"scp sshd_config " + combined + ":" + filepath};
 
-    const char* comb = command.c_str();
+    std::string access_cmd {"Start-Process notepad '${env:ProgramData}/ssh/sshd_config' -Verb runAs"};
 
+
+    const char* comb = command.c_str();
+    const char* ac_cmd = access_cmd.c_str();
+
+    std::string access = execSSH(ac_cmd); 
     std::string output = execSSH(comb);
 }
+
 
 int main() {
     std::string ip;
