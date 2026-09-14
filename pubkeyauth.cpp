@@ -2,6 +2,8 @@
 #include <cstdio>
 #include <array>
 #include <memory>
+#include <regex>
+#include <fstream>
 
 
 std::string execSSH(const char* cmd) {
@@ -31,6 +33,7 @@ void doLinuxCmd (const std::string& ip ,const std::string& username) {
     const char* comb = command.c_str();
     
     std::string output = execSSH(comb);
+    std::cout << "ssh cmd ran for linux \n";
 }
 
 
@@ -46,23 +49,52 @@ void doWinCmd (const std::string& ip, const std::string& username ){
     const char* comb = command.c_str();
     const char* ac_cmd = access_cmd.c_str();
 
-    std::string access = execSSH(ac_cmd); 
+    std::string access = execSSH(ac_cmd);
+
     std::string output = execSSH(comb);
+    std::cerr << "ssh cmd ran for windows \n";
 }
 
 
 int main() {
     std::string ip;
     std::string username;
+    std::regex match("(Windows)(.*)");
+
+    std::ofstream log("log.txt");
+
+    bool isWindows = false;
 
     std::cout << "please enter an ip: \n";
     std::cin >> ip;
+    std::cout << "\n";
 
     std::cout << "please enter a username: \n";
     std::cin >> username;
+    std::cout << "\n";
 
-    doLinuxCmd(ip, username);
-    doWinCmd(ip, username);
+    std::string result = execSSH("wmic os get Caption"); // run win cmd
+    std::cout << result << "\n";
+
+    if (std::regex_search(result, match)){
+        isWindows = true;
+        std::cerr << "this is a windows computer.\n";
+    }
+
+    if (isWindows){
+        doWinCmd(ip, username);
+    }
+    else{
+        doLinuxCmd(ip, username);
+    }
+
+    if (!log.is_open()){
+        std::cerr << "log file could not be opened. \n";
+        return 1;
+    }
+
+    log << "program successfully ran \n";
+    log << result << "\n";
 
     return 0;
 }
