@@ -6,6 +6,8 @@
 #include <fstream>
 
 
+
+
 std::string execSSH(const char* cmd) {
     std::array<char, 256> buffer;
     std::string result;
@@ -23,7 +25,30 @@ std::string execSSH(const char* cmd) {
     return result;
 }
 
+// TODO: Define a struct here that bundles connection data (Ip/Username)
+struct connectionInfo {
 
+};
+
+// TODO: Move input gathering out of the main and into this function.
+// It should return the newly created struct containing ip/username.
+// The idea is this gather the info and pass the struct on to doLinux/DoWindows
+// Example: connectionInfo con = gatherInput();
+//          doWinCmd(con)
+connectionInfo gatherInput() {
+
+};
+
+// TODO: Move operating system detection logic out of main() and into its own function here.
+// With a boolean return, the OS detection can be used to run the appropriate command witha  ternary operator
+// Example: isWindows() ? doWinCmd : doLinuxCmd;
+// The above example checks the output of isWindows, and runs doWinCmd if true, and doLinuxCmd is false.
+bool isWindows() {
+
+    return 0;
+};
+
+// TODO: Change the parameter to take in a 'connectionInfo' struct instead of individual string values.
 void doLinuxCmd (const std::string& ip ,const std::string& username) {
     std::string combined {std::string(username) + "@" + std::string(ip)};
 
@@ -36,7 +61,7 @@ void doLinuxCmd (const std::string& ip ,const std::string& username) {
     std::cout << "ssh cmd ran for linux \n";
 }
 
-
+// TODO: Change the parameter to take in a 'connectionInfo' struct instead of individual string values.
 void doWinCmd (const std::string& ip, const std::string& username ){
     std::string combined {std::string(username) + "@" + std::string(ip)};
 
