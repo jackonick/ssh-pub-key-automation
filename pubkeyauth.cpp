@@ -24,8 +24,8 @@ std::string execSSH(const char* cmd) {
 }
 
 struct connectionInfo {
-  const char* IP;
-  const char* Username;
+  std::string IP;
+  std::string Username;
 };
 
 // TODO: Move input gathering out of the main and into this function.
@@ -69,7 +69,7 @@ void doLinuxCmd (const connectionInfo&) {
     std::string ip = connectionInfo.IP;
     std::string Username = connectionInfo.Username;
 
-    std::string combined {std::string(username) + "@" + std::string(ip)};
+    std::string combined {std::string(Username) + "@" + std::string(ip)};
 
     std::string filepath {"/etc/ssh"};
     std::string command {"scp sshd_config " + combined + ":" + filepath};
@@ -85,7 +85,7 @@ void doWinCmd (const connectionInfo&){
     std::string ip = connectionInfo.IP;
     std::string Username = connectionInfo.Username;
 
-    std::string combined {std::string(username) + "@" + std::string(ip)};
+    std::string combined {std::string(Username) + "@" + std::string(ip)};
 
     std::string filepath {"\"${env:ProgramData}/ssh/sshd_config\""};
     std::string command {"scp sshd_config " + combined + ":" + filepath};
