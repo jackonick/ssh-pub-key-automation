@@ -6,8 +6,6 @@
 #include <fstream>
 
 
-
-
 std::string execSSH(const char* cmd) {
     std::array<char, 256> buffer;
     std::string result;
@@ -25,9 +23,9 @@ std::string execSSH(const char* cmd) {
     return result;
 }
 
-// TODO: Define a struct here that bundles connection data (Ip/Username)
 struct connectionInfo {
-
+  const char* IP;
+  const char* Username;
 };
 
 // TODO: Move input gathering out of the main and into this function.
@@ -36,7 +34,17 @@ struct connectionInfo {
 // Example: connectionInfo con = gatherInput();
 //          doWinCmd(con)
 connectionInfo gatherInput() {
+  conectionInfo ci;
 
+  std::cout << "please enter an ip: \n";
+  std::cin >> ci.IP;
+  std::cout << "\n";
+
+  std::cout << "please enter a username: \n";
+  std::cin >> ci.Username;
+  std::cout << "\n";
+
+  return ci;
 };
 
 // TODO: Move operating system detection logic out of main() and into its own function here.
@@ -44,12 +52,23 @@ connectionInfo gatherInput() {
 // Example: isWindows() ? doWinCmd : doLinuxCmd;
 // The above example checks the output of isWindows, and runs doWinCmd if true, and doLinuxCmd is false.
 bool isWindows() {
+  std::regex match("(Windows)(.*)");
 
-    return 0;
+  std::string result execSSH("wmic os get Caption");
+
+  if (std::regex_search(result, match)){
+    return 1;
+    std::cerr << "This is a windows PC.\n";
+  }
+
+  return 0;
 };
 
 // TODO: Change the parameter to take in a 'connectionInfo' struct instead of individual string values.
-void doLinuxCmd (const std::string& ip ,const std::string& username) {
+void doLinuxCmd (const connectionInfo&) {
+    std::string ip = connectionInfo.IP;
+    std::string Username = connectionInfo.Username;
+
     std::string combined {std::string(username) + "@" + std::string(ip)};
 
     std::string filepath {"/etc/ssh"};
@@ -62,7 +81,10 @@ void doLinuxCmd (const std::string& ip ,const std::string& username) {
 }
 
 // TODO: Change the parameter to take in a 'connectionInfo' struct instead of individual string values.
-void doWinCmd (const std::string& ip, const std::string& username ){
+void doWinCmd (const connectionInfo&){
+    std::string ip = connectionInfo.IP;
+    std::string Username = connectionInfo.Username;
+
     std::string combined {std::string(username) + "@" + std::string(ip)};
 
     std::string filepath {"\"${env:ProgramData}/ssh/sshd_config\""};
@@ -82,44 +104,9 @@ void doWinCmd (const std::string& ip, const std::string& username ){
 
 
 int main() {
-    std::string ip;
-    std::string username;
-    std::regex match("(Windows)(.*)");
+    connectionInfo con = gatherInput();
 
-    std::ofstream log("log.txt");
-
-    bool isWindows = false;
-
-    std::cout << "please enter an ip: \n";
-    std::cin >> ip;
-    std::cout << "\n";
-
-    std::cout << "please enter a username: \n";
-    std::cin >> username;
-    std::cout << "\n";
-
-    std::string result = execSSH("wmic os get Caption"); // run win cmd
-    std::cout << result << "\n";
-
-    if (std::regex_search(result, match)){
-        isWindows = true;
-        std::cerr << "this is a windows computer.\n";
-    }
-
-    if (isWindows){
-        doWinCmd(ip, username);
-    }
-    else{
-        doLinuxCmd(ip, username);
-    }
-
-    if (!log.is_open()){
-        std::cerr << "log file could not be opened. \n";
-        return 1;
-    }
-
-    log << "program successfully ran \n";
-    log << result << "\n";
+    isWindows() ? dowWinCmd(con) : doLinuxCmd(con);
 
     return 0;
 }
