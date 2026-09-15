@@ -5,7 +5,6 @@
 #include <regex>
 #include <fstream>
 
-
 std::string execSSH(const char* cmd) {
     std::array<char, 256> buffer;
     std::string result;
@@ -28,11 +27,6 @@ struct connectionInfo {
   std::string Username;
 };
 
-// TODO: Move input gathering out of the main and into this function.
-// It should return the newly created struct containing ip/username.
-// The idea is this gather the info and pass the struct on to doLinux/DoWindows
-// Example: connectionInfo con = gatherInput();
-//          doWinCmd(con)
 connectionInfo gatherInput() {
   connectionInfo ci;
 
@@ -47,10 +41,6 @@ connectionInfo gatherInput() {
   return ci;
 };
 
-// TODO: Move operating system detection logic out of main() and into its own function here.
-// With a boolean return, the OS detection can be used to run the appropriate command witha  ternary operator
-// Example: isWindows() ? doWinCmd : doLinuxCmd;
-// The above example checks the output of isWindows, and runs doWinCmd if true, and doLinuxCmd is false.
 bool isWindows() {
   std::regex match("(Windows)(.*)");
 
@@ -64,7 +54,6 @@ bool isWindows() {
   return 0;
 };
 
-// TODO: Change the parameter to take in a 'connectionInfo' struct instead of individual string values.
 void doLinuxCmd (const connectionInfo& ci) {
     std::string combined {ci.Username + "@" + ci.IP};
 
@@ -77,7 +66,6 @@ void doLinuxCmd (const connectionInfo& ci) {
     std::cout << "ssh cmd ran for linux \n";
 }
 
-// TODO: Change the parameter to take in a 'connectionInfo' struct instead of individual string values.
 void doWinCmd (const connectionInfo& ci){
     std::string combined {ci.Username + "@" + ci.IP};
 
