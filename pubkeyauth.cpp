@@ -34,7 +34,7 @@ struct connectionInfo {
 // Example: connectionInfo con = gatherInput();
 //          doWinCmd(con)
 connectionInfo gatherInput() {
-  conectionInfo ci;
+  connectionInfo ci;
 
   std::cout << "please enter an ip: \n";
   std::cin >> ci.IP;
@@ -54,22 +54,19 @@ connectionInfo gatherInput() {
 bool isWindows() {
   std::regex match("(Windows)(.*)");
 
-  std::string result execSSH("wmic os get Caption");
+  std::string result = execSSH("wmic os get Caption");
 
   if (std::regex_search(result, match)){
-    return 1;
     std::cerr << "This is a windows PC.\n";
+    return 1;
   }
 
   return 0;
 };
 
 // TODO: Change the parameter to take in a 'connectionInfo' struct instead of individual string values.
-void doLinuxCmd (const connectionInfo&) {
-    std::string ip = connectionInfo.IP;
-    std::string Username = connectionInfo.Username;
-
-    std::string combined {std::string(Username) + "@" + std::string(ip)};
+void doLinuxCmd (const connectionInfo& ci) {
+    std::string combined {ci.Username + "@" + ci.IP};
 
     std::string filepath {"/etc/ssh"};
     std::string command {"scp sshd_config " + combined + ":" + filepath};
@@ -81,11 +78,8 @@ void doLinuxCmd (const connectionInfo&) {
 }
 
 // TODO: Change the parameter to take in a 'connectionInfo' struct instead of individual string values.
-void doWinCmd (const connectionInfo&){
-    std::string ip = connectionInfo.IP;
-    std::string Username = connectionInfo.Username;
-
-    std::string combined {std::string(Username) + "@" + std::string(ip)};
+void doWinCmd (const connectionInfo& ci){
+    std::string combined {ci.Username + "@" + ci.IP};
 
     std::string filepath {"\"${env:ProgramData}/ssh/sshd_config\""};
     std::string command {"scp sshd_config " + combined + ":" + filepath};
@@ -106,7 +100,7 @@ void doWinCmd (const connectionInfo&){
 int main() {
     connectionInfo con = gatherInput();
 
-    isWindows() ? dowWinCmd(con) : doLinuxCmd(con);
+    isWindows() ? doWinCmd(con) : doLinuxCmd(con);
 
     return 0;
 }
