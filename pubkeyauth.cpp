@@ -4,7 +4,7 @@
 #include <memory>
 #include <regex>
 #include <fstream>
-
+#include "pubkeyauth.h"
 std::string doCmd(const char* cmd) {
     std::array<char, 256> buffer;
     std::string result;
@@ -22,11 +22,6 @@ std::string doCmd(const char* cmd) {
 
     return result;
 }
-
-struct connectionInfo {
-  std::string IP;
-  std::string Username;
-};
 
 connectionInfo gatherInput() {
   connectionInfo ci;
@@ -51,6 +46,16 @@ bool isWindows() {
     std::cerr << "This is a windows PC.\n";
     return 1;
   }
+
+  return 0;
+};
+
+std::string assemble_linux_command(const connectionInfo& ci, std::string filepath){
+
+  return "TEST";
+};
+
+std::string assemble_win_command(const connectionInfo& ci, std::string filepath){
 
   return 0;
 };
@@ -92,7 +97,7 @@ void doWinCmd (const connectionInfo& ci){
     std::cerr << "ssh cmd ran for windows \n";
 }
 
-
+#ifndef UNIT_TESTING
 int main() {
     connectionInfo con = gatherInput();
 
@@ -100,3 +105,4 @@ int main() {
 
     return 0;
 }
+#endif
