@@ -5,7 +5,7 @@
 #include <regex>
 #include <fstream>
 
-std::string execSSH(const char* cmd) {
+std::string doCmd(const char* cmd) {
     std::array<char, 256> buffer;
     std::string result;
     
@@ -45,7 +45,7 @@ connectionInfo gatherInput() {
 bool isWindows() {
   std::regex match("(Windows)(.*)");
 
-  std::string result = execSSH("wmic os get Caption");
+  std::string result = doCmd("wmic os get Caption");
 
   if (std::regex_search(result, match)){
     std::cerr << "This is a windows PC.\n";
@@ -66,8 +66,8 @@ void doLinuxCmd (const connectionInfo& ci) {
     const char* ssh = ssh_cmd.c_str();
     const char* comb = command.c_str();
    
-    std::string sshoutput = execSSH(ssh);
-    std::string output = execSSH(comb);
+    std::string sshoutput = doCmd(ssh);
+    std::string output = doCmd(comb);
     std::cerr << "ssh cmd ran for linux \n";
 
     std::cerr << sshoutput << "\n";
@@ -86,9 +86,9 @@ void doWinCmd (const connectionInfo& ci){
     const char* comb = command.c_str();
     const char* ac_cmd = access_cmd.c_str();
 
-    std::string access = execSSH(ac_cmd);
+    std::string access = doCmd(ac_cmd);
 
-    std::string output = execSSH(comb);
+    std::string output = doCmd(comb);
     std::cerr << "ssh cmd ran for windows \n";
 }
 
