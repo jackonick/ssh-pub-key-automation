@@ -59,34 +59,34 @@ void doLinuxCmd (const connectionInfo& ci) {
     std::cout << "Starting Linux Command \n";
     std::string combined {ci.Username + "@" + ci.IP};
 
-    std::string filepath {"~/ub-serv/.ssh"};
-    std::string command {"scp ./sshd_config" + combined + ":" + filepath};
+    std::string command {"scp ./sshd_config " + combined + ":~"};
+    std::cerr << command << "\n";
 
-    std::string ssh_cmd = ("ssh " + combined);
-    const char* ssh = ssh_cmd.c_str();
+    std::string check {"ssh -q " + combined + " '[ -f ~./sshd_config ]' && echo \"File exists\" || echo \"File does not exist\""};
+
     const char* comb = command.c_str();
-   
-    std::string sshoutput = doCmd(ssh);
-    std::string output = doCmd(comb);
-    std::cerr << "ssh cmd ran for linux \n";
+    const char* check2 = check.c_str();
 
-    std::cerr << sshoutput << "\n";
+    std::string output = doCmd(comb);
+    std::string check_out = doCmd(check2);
+
     std::cerr << output << "\n";
+    std::cerr << check_out << "\n";
 }
 
 void doWinCmd (const connectionInfo& ci){
     std::string combined {ci.Username + "@" + ci.IP};
 
-    std::string filepath {"\"${env:ProgramData}/ssh/sshd_config\""};
-    std::string command {"scp sshd_config " + combined + ":" + filepath};
+    //std::string filepath {""};
+    std::string command {"scp sshd_config " + combined + ":~"};
 
-    std::string access_cmd {"Start-Process notepad " + filepath + " -Verb runAs"};
-    std::cerr << access_cmd;
+    //std::string access_cmd {"Start-Process notepad " + filepath + " -Verb runAs"};
+    //std::cerr << access_cmd;
 
     const char* comb = command.c_str();
-    const char* ac_cmd = access_cmd.c_str();
+    //const char* ac_cmd = access_cmd.c_str();
 
-    std::string access = doCmd(ac_cmd);
+    //std::string access = doCmd(ac_cmd);
 
     std::string output = doCmd(comb);
     std::cerr << "ssh cmd ran for windows \n";
