@@ -17,6 +17,7 @@ std::string execSSH(const char* cmd) {
 
     while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr){
         result += buffer.data();
+        std::cerr << result;
     }
 
     return result;
@@ -67,7 +68,7 @@ void doLinuxCmd (const connectionInfo& ci) {
    
     std::string sshoutput = execSSH(ssh);
     std::string output = execSSH(comb);
-    std::cout << "ssh cmd ran for linux \n";
+    std::cerr << "ssh cmd ran for linux \n";
 
     std::cerr << sshoutput << "\n";
     std::cerr << output << "\n";
@@ -80,7 +81,7 @@ void doWinCmd (const connectionInfo& ci){
     std::string command {"scp sshd_config " + combined + ":" + filepath};
 
     std::string access_cmd {"Start-Process notepad " + filepath + " -Verb runAs"};
-    std::cout << access_cmd;
+    std::cerr << access_cmd;
 
     const char* comb = command.c_str();
     const char* ac_cmd = access_cmd.c_str();
