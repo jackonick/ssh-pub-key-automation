@@ -55,15 +55,22 @@ bool isWindows() {
 };
 
 void doLinuxCmd (const connectionInfo& ci) {
+    std::cout << "Starting Linux Command \n";
     std::string combined {ci.Username + "@" + ci.IP};
 
-    std::string filepath {"/etc/ssh"};
-    std::string command {"scp sshd_config " + combined + ":" + filepath};
+    std::string filepath {"~/ub-serv/.ssh"};
+    std::string command {"scp ./sshd_config" + combined + ":" + filepath};
 
+    std::string ssh_cmd = ("ssh " + combined);
+    const char* ssh = ssh_cmd.c_str();
     const char* comb = command.c_str();
-    
+   
+    std::string sshoutput = execSSH(ssh);
     std::string output = execSSH(comb);
     std::cout << "ssh cmd ran for linux \n";
+
+    std::cerr << sshoutput << "\n";
+    std::cerr << output << "\n";
 }
 
 void doWinCmd (const connectionInfo& ci){
