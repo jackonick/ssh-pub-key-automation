@@ -2,6 +2,6 @@ build/
 build-win/
 password.txt
 pubkeyauth
-pbka
-lbsh
-test
+pbka.exe
+lbsh.exe
+test.exe
