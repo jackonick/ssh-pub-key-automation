@@ -1,30 +1,37 @@
 #include <gtest/gtest.h>
 #include <string>
 #include "pubkeyauth.h"
-// Include or declare your structs/functions if they aren't in a header
+#include <filesystem>
+#include <iostream>
 
-// Example Test 1: Test connectionInfo structure handling
-TEST(ConnectionInfoTest, FieldsAreStoredCorrectly) {
-    connectionInfo ci;
-    ci.IP = "192.168.1.50";
-    ci.Username = "root";
+TEST(ReadComputerListTest, ReadsIPs)
+{   const std::filesystem::path computerFile = "computer_list.txt";
+    const auto computers = read_comp_list("computer_list.txt");
 
-    EXPECT_EQ(ci.IP, "192.168.1.50");
-    EXPECT_EQ(ci.Username, "root");
+    ASSERT_EQ(computers.size(), 2);
+
+    EXPECT_EQ(computers[0], "192.168.100.54");
+    EXPECT_EQ(computers[1], "192.168.100.53");
 }
 
-// Example Test 2: Basic string formatting logic used in your commands
-TEST(CommandLogicTest, UsernameAndIpCombination) {
-    connectionInfo ci{"10.0.0.5", "testuser"};
-    std::string combined {ci.Username + "@" + ci.IP};
+TEST(SecureCopyTest, CopiesFileSuccessfully)
+{
+    const std::filesystem::path filePath = "config.conf";
+    const std::string ip = "192.168.100.54";
+
+    int result = secure_copy(filePath, ip);
+
+    if (result == 0)
+    {
+        std::cout << "PASS: secure copy completed successfully for " << ip << '\n';
+    }
+    else
+    {
+        std::cerr << "FAIL: secure copy failed for " << ip
+                  << " (return code: " << result << ")\n";
+    }
+
+    EXPECT_EQ(result, 0);
     
-    EXPECT_EQ(combined, "testuser@10.0.0.5");
 }
 
-TEST(LinuxCommandStructureTest, AssembleTest) {
-    connectionInfo ci;
-    ci.IP = "192.168.1.50";
-    ci.Username = "root";
-    
-    EXPECT_EQ(assemble_linux_command(ci,"TESTPATH"),"TEST");
-}

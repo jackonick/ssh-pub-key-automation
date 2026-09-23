@@ -1,108 +1,70 @@
-#include <iostream>
-#include <cstdio>
-#include <array>
-#include <memory>
-#include <regex>
-#include <fstream>
 #include "pubkeyauth.h"
-std::string doCmd(const char* cmd) {
-    std::array<char, 256> buffer;
-    std::string result;
-    
-    std::unique_ptr <FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <filesystem>
 
-    if (!pipe) {
-        throw std::runtime_error("popem() failed");
-    }
+// SCP Example: scp [source_file] [user@remote_host:destination_path]
 
-    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr){
-        result += buffer.data();
-        std::cerr << result;
-    }
 
-    return result;
+// TODO: DECLARE GLOBAL VARIABLES HERE.
+// Should be for things like:
+  //  computer lists, 
+  //  command strings, 
+  //  file names/paths - (Filesystem library included. Use std::filesystem::path instead of strings)
+
+
+// TODO: Implement the secure_copy function to actually perform the file transfer.
+// Use the std::system function to execute the secure copy command (e.g., scp).
+/** 
+ * Securely copies a file to a remote computer using its IP address or hostname.
+ * @param path Path to the input file.
+ * @param ip IP address or hostname of the target computer.
+ * @return 0 on success, non-zero on failure.
+ */
+int secure_copy(std::filesystem::path path, std::string ip) {
+
+  return 0;
 }
 
-connectionInfo gatherInput() {
-  connectionInfo ci;
 
-  std::cout << "please enter an ip: \n";
-  std::cin >> ci.IP;
-  std::cout << "\n";
+/**
+ * Reads computer addresses or hostnames from a file, one entry per line.
+ *
+ * @param file_name Path to the input file.
+ * @return Lines read from the file, or an empty vector if the file cannot
+ *         be opened or contains no entries.
+ */
+std::vector<std::string> read_comp_list(std::filesystem::path file_name) {
+  std::ifstream file(file_name);
 
-  std::cout << "please enter a username: \n";
-  std::cin >> ci.Username;
-  std::cout << "\n";
+  std::vector<std::string> ip_list;
+  std::string ip;
 
-  return ci;
-};
-
-bool isWindows() {
-  std::regex match("(Windows)(.*)");
-
-  std::string result = doCmd("wmic os get Caption");
-
-  if (std::regex_search(result, match)){
-    std::cerr << "This is a windows PC.\n";
-    return 1;
+  while (std::getline(file, ip)) {
+    ip_list.push_back(ip);
   }
 
-  return 0;
-};
-
-std::string assemble_linux_command(const connectionInfo& ci, std::string filepath){
-
-  return "TEST";
-};
-
-std::string assemble_win_command(const connectionInfo& ci, std::string filepath){
-
-  return 0;
-};
-
-void doLinuxCmd (const connectionInfo& ci) {
-    std::cout << "Starting Linux Command \n";
-    std::string combined {ci.Username + "@" + ci.IP};
-
-    std::string command {"scp ./sshd_config " + combined + ":~"};
-    std::cerr << command << "\n";
-
-    std::string check {"ssh -q " + combined + " '[ -f ~./sshd_config ]' && echo \"File exists\" || echo \"File does not exist\""};
-
-    const char* comb = command.c_str();
-    const char* check2 = check.c_str();
-
-    std::string output = doCmd(comb);
-    std::string check_out = doCmd(check2);
-
-    std::cerr << output << "\n";
-    std::cerr << check_out << "\n";
+  return ip_list;
 }
 
-void doWinCmd (const connectionInfo& ci){
-    std::string combined {ci.Username + "@" + ci.IP};
 
-    //std::string filepath {""};
-    std::string command {"scp sshd_config " + combined + ":~"};
 
-    //std::string access_cmd {"Start-Process notepad " + filepath + " -Verb runAs"};
-    //std::cerr << access_cmd;
 
-    const char* comb = command.c_str();
-    //const char* ac_cmd = access_cmd.c_str();
 
-    //std::string access = doCmd(ac_cmd);
-
-    std::string output = doCmd(comb);
-    std::cerr << "ssh cmd ran for windows \n";
-}
 
 #ifndef UNIT_TESTING
 int main() {
-    connectionInfo con = gatherInput();
+  
 
-    isWindows() ? doWinCmd(con) : doLinuxCmd(con);
+  #ifdef _WIN32
+  // Windows-specific includes or definitions can go here.
+  #else
+  // Non-Windows-specific includes or definitions can go here.
+  #endif
 
-    return 0;
+
+
+  return 0;
 }
 #endif
