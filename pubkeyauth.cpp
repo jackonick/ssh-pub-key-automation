@@ -7,11 +7,12 @@
 // SCP Example: scp [source_file] [user@remote_host:destination_path]
 
 
-// TODO: DECLARE GLOBAL VARIABLES HERE.
-// Should be for things like:
-  //  computer lists, 
-  //  command strings, 
-  //  file names/paths - (Filesystem library included. Use std::filesystem::path instead of strings)
+struct Variables{
+  std::string Username;
+  std::filysystem::path sourcePath { "./computer_list.txt" };
+  std::filesystem::path windowsDestinationPath { "C:\\Users\\" + Username + ".ssh"};
+  std::filesystem::path linuxDestinationPath { "/home/" + Username + "/.ssh/config" };
+};
 
 
 // TODO: Implement the secure_copy function to actually perform the file transfer.
@@ -22,8 +23,10 @@
  * @param ip IP address or hostname of the target computer.
  * @return 0 on success, non-zero on failure.
  */
-int secure_copy(std::filesystem::path path, std::string ip) {
+int secure_copy(std::string ip) {
 
+  std::system( "scp " + sourcePath + Variables.Username + "@" + ip + );
+  std::cout << 
   return 0;
 }
 
