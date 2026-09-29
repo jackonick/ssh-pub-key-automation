@@ -4,32 +4,29 @@
 #include <fstream>
 #include <filesystem>
 
-// SCP Example: scp [source_file] [user@remote_host:destination_path]
+CommandResult run_command(const std::string& command) {
+  std::string output;
 
+  FILE* pipe = popen((command + " 2>&1").c_str(), "r");
 
-struct Variables{
-  std::string Username;
-  std::filysystem::path sourcePath { "./computer_list.txt" };
-  std::filesystem::path windowsDestinationPath { "C:\\Users\\" + Username + ".ssh"};
-  std::filesystem::path linuxDestinationPath { "/home/" + Username + "/.ssh/config" };
-};
+  if (!pipe) {
+    return {
+      -1,
+      "Failed to execute command, no pipe opened\n"
+    };
+  }
 
+  char buffer[4096];
+  
+  while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
+    output += buffer;
+  }
 
-// TODO: Implement the secure_copy function to actually perform the file transfer.
-// Use the std::system function to execute the secure copy command (e.g., scp).
-/** 
- * Securely copies a file to a remote computer using its IP address or hostname.
- * @param path Path to the input file.
- * @param ip IP address or hostname of the target computer.
- * @return 0 on success, non-zero on failure.
- */
-int secure_copy(std::string ip) {
+  int result = pclose(pipe);
 
-  std::system( "scp " + sourcePath + Variables.Username + "@" + ip + );
-  std::cout << 
-  return 0;
+  return {result, output};
+
 }
-
 
 /**
  * Reads computer addresses or hostnames from a file, one entry per line.
@@ -39,12 +36,18 @@ int secure_copy(std::string ip) {
  *         be opened or contains no entries.
  */
 std::vector<std::string> read_comp_list(std::filesystem::path file_name) {
-  std::ifstream file(file_name);
+  std::ifstream file(Globals().hostList);
 
   std::vector<std::string> ip_list;
   std::string ip;
 
   while (std::getline(file, ip)) {
+
+    // Strip trailing carriage return (\r) if it exists
+    if (!ip.empty() && ip.back() == '\r') {
+      ip.pop_back();
+    }
+
     ip_list.push_back(ip);
   }
 
@@ -55,15 +58,6 @@ std::vector<std::string> read_comp_list(std::filesystem::path file_name) {
 #ifndef UNIT_TESTING
 int main() {
   
-
-  #ifdef _WIN32
-  // Windows-specific includes or definitions can go here.
-  #else
-  // Non-Windows-specific includes or definitions can go here.
-  #endif
-
-
-
   return 0;
 }
 #endif

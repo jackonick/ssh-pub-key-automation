@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/MySCPProject_Tests.dir/link.d CMakeFiles/MySCPProject_Tests.dir/tests.cpp.o CMakeFiles/MySCPProject_Tests.dir/pubkeyauth.cpp.o -o MySCPProject_Tests  lib/libgtest_main.a lib/libgtest.a

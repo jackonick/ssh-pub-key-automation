@@ -1,0 +1,8 @@
+{
+    "cmake.configureEnvironment": {
+        "SSH_PASSWORD": "24mrfire"
+    },
+    "cmake.environment": {
+        "SSH_PASSWORD": "24mrfire"
+    }
+}

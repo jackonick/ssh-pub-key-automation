@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/MySCPProject.dir/link.d CMakeFiles/MySCPProject.dir/pubkeyauth.cpp.o -o MySCPProject

@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/mnt/c/Users/joegf/Documents/Personal/CPP/ssh-pub-key-automation/build_wsl/_deps/googletest-subbuild/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

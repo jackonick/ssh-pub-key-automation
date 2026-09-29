@@ -1,0 +1,10 @@
+{
+	"InstallScripts" : 
+	[
+		"/mnt/c/Users/joegf/Documents/Personal/CPP/ssh-pub-key-automation/build_wsl/cmake_install.cmake",
+		"/mnt/c/Users/joegf/Documents/Personal/CPP/ssh-pub-key-automation/build_wsl/_deps/googletest-build/cmake_install.cmake",
+		"/mnt/c/Users/joegf/Documents/Personal/CPP/ssh-pub-key-automation/build_wsl/_deps/googletest-build/googlemock/cmake_install.cmake",
+		"/mnt/c/Users/joegf/Documents/Personal/CPP/ssh-pub-key-automation/build_wsl/_deps/googletest-build/googletest/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

@@ -1,0 +1,5 @@
+if(EXISTS "/mnt/c/Users/joegf/Documents/Personal/CPP/ssh-pub-key-automation/build_wsl/MySCPProject_Tests[1]_tests.cmake")
+  include("/mnt/c/Users/joegf/Documents/Personal/CPP/ssh-pub-key-automation/build_wsl/MySCPProject_Tests[1]_tests.cmake")
+else()
+  add_test(MySCPProject_Tests_NOT_BUILT MySCPProject_Tests_NOT_BUILT)
+endif()

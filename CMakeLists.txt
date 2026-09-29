@@ -11,6 +11,17 @@ configure_file(
     COPYONLY
 )
 
+configure_file(
+    ${CMAKE_SOURCE_DIR}/sshd_config
+    ${CMAKE_BINARY_DIR}/sshd_config
+    COPYONLY
+)
+
+configure_file(
+    ${CMAKE_SOURCE_DIR}/id_ed25519.pub
+    ${CMAKE_BINARY_DIR}/id_ed25519.pub
+    COPYONLY
+)
 
 enable_testing()
 
