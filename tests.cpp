@@ -46,10 +46,10 @@ TEST (SSHTest, AllHostsReachable) {
 
         // Command to be executed on the remote target goes here.
         
-        const std::string target {" loc-admin@" + ip};
-        const std::string target_cmd {" pwd"};
+        const std::string target {" ub-serv@" + ip};
+        const std::string target_cmd {" scp ./sshd_config " + target + ":" + Globals().linuxDestinationPath.string()};
         const std::string command {
-        std::string("sshpass -e ssh -o StrictHostKeyChecking=no") + (target + target_cmd)
+        std::string("sshpass -e scp ./sshd_config " + target + ":" + Globals().linuxDestinationPath.string())
         };
 
         std::cout << "\nRunning command: " << command << std::endl;

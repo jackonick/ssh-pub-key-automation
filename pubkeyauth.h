@@ -6,7 +6,7 @@
 #include <filesystem>
 
 struct Globals{
-  std::string Username {"loc-admin"};
+  std::string Username {"ub-serv"};
   std::filesystem::path hostList { "./computer_list.txt" };
   std::filesystem::path windowsDestinationPath { "C:\\Users\\" + Username + ".ssh"};
   std::filesystem::path linuxDestinationPath { "/home/" + Username + "/.ssh/config" };
