@@ -65,6 +65,17 @@ TEST (SSHTest, AllHostsReachable) {
         std::cout << "Result: " << result2.exit_code << "\n";
         std::cout << "Output:\n" << result2.output << "\n";
 
+        if (result1.exit_code != 0 || result1.output.find("not found") != std::string::npos) {
+            failed_hosts.push_back(ip);
+            failure_log 
+                << "========================================\n"
+                << "Host: " << ip << "\n"
+                << "Command: " << pubkeyMove << "\n"
+                << "Output:\n"
+                << result1.output
+                << "========================================\n\n";
+        }
+
         if (result2.exit_code != 0 || result2.output.find("No route to host") != std::string::npos) {
             failed_hosts.push_back(ip);
             failure_log 
