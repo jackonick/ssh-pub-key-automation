@@ -11,7 +11,7 @@ struct Globals{
   std::filesystem::path windowsDestinationPath { "C:\\Users\\" + Username + ".ssh"};
   std::filesystem::path linuxDestinationPath { "/home/" + Username + "/.ssh/config" };
   std::filesystem::path sshd_config { "./sshd_config" };
-  std::filesystem::path pubkeyPath { "./id_rsa.pub" };
+  std::filesystem::path pubkeyPath { "~/.ssh/id_ed25519.pub" };
 };
 
 struct CommandResult {

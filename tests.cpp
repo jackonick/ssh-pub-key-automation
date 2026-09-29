@@ -48,28 +48,35 @@ TEST (SSHTest, AllHostsReachable) {
         
         const std::string target {" ub-serv@" + ip};
         const std::string target_cmd {" scp ./sshd_config " + target + ":" + Globals().linuxDestinationPath.string()};
-        const std::string command {
+        const std::string commandSCP {
         std::string("sshpass -e scp ./sshd_config " + target + ":" + Globals().linuxDestinationPath.string())
         };
+        const std::string pubkeyMove {" ssh-copy-id -i " + Globals().pubkeyPath.string() + target };
 
-        std::cout << "\nRunning command: " << command << std::endl;
-        const auto result = run_command(command);
+        std::cout << "\nRunning command: " << commandSCP << std::endl;
+        const auto result1 = run_command(pubkeyMove);
+        const auto result2 = run_command(commandSCP);
 
         std::cout << "Host: " << ip << "\n";
-        std::cout << "Result: " << result.exit_code << "\n";
-        std::cout << "Output:\n" << result.output << "\n";
+        std::cout << "Result: " << result1.exit_code << "\n";
+        std::cout << "Output:\n" << result1.output << "\n";
 
-        if (result.exit_code != 0 || result.output.find("No route to host") != std::string::npos) {
+        std::cout << "Host: " << ip << "\n";
+        std::cout << "Result: " << result2.exit_code << "\n";
+        std::cout << "Output:\n" << result2.output << "\n";
+
+        if (result2.exit_code != 0 || result2.output.find("No route to host") != std::string::npos) {
             failed_hosts.push_back(ip);
             failure_log 
                 << "========================================\n"
                 << "Host: " << ip << "\n"
-                << "Command: " << command << "\n"
+                << "Command: " << commandSCP << "\n"
                 << "Output:\n"
-                << result.output
+                << result2.output
                 << "========================================\n\n";
         }
         EXPECT_EQ(failed_hosts.size(), 0);
+
     }
 }
 
