@@ -44,8 +44,8 @@ TEST (SSHTest, AllHostsReachable) {
     
     for (const auto& ip : read_comp_list(Globals().hostList)) {
 
-        // Command to be executed on the remote target goes here.
-        
+        // TODO: Move the following region into the header. 
+        // ====================================================
         const std::string target {" ub-serv@" + ip};
         const std::string target_cmd {" scp ./sshd_config " + target + ":" + Globals().linuxDestinationPath.string()};
         const std::string commandSCP {
@@ -54,6 +54,9 @@ TEST (SSHTest, AllHostsReachable) {
         const std::string pubkeyMove {" ssh-copy-id -i " + Globals().pubkeyPath.string() + target };
 
         std::cout << "\nRunning command: " << commandSCP << std::endl;
+        // end region
+        // ========================================================
+        
         const auto result1 = run_command(pubkeyMove);
         const auto result2 = run_command(commandSCP);
 
